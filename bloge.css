@@ -1,0 +1,164 @@
+body{
+    background-color:  rgb(46, 46, 136);
+}
+*{margin: 0px;
+padding: 0px;}
+.navbar a{
+    color: aliceblue;
+    font-size: large;
+    text-decoration: none;
+}
+.navbar .mid{
+    margin-left: 17%;
+    margin-right: 17%;
+}
+h1{
+    text-align: center;
+    color: aliceblue;
+    font-family: cursive;
+    margin-top: 5%;
+    margin-bottom: 3%;
+}
+.head{
+    position: absolute;
+    margin-left: 5%;
+}
+.head img{
+    width: 100%;
+    height: 90vh;
+}
+.head :hover{
+    opacity: .7;
+}
+.p{
+    position: relative;
+    background-color:white;
+    width: 50%;
+    top:55vh;
+    left:11%;
+    padding: 20px;
+}
+.p i{
+    font-size: 20px;
+    color: rgb(46, 46, 136);
+    padding: 5px;
+}
+.p a{
+    text-decoration: black;
+    margin-right: 65%;
+}
+.sacn{
+    margin-top: 80vh;
+    color: rgb(46, 46, 136) ;
+}
+.d{
+    padding: 20px;
+    height: 56vh;
+    padding-top: 30%;
+    color: white;
+    text-align: center;
+    background-color: black;
+    border-radius: 50px;
+    top:-56vh;
+    position: relative;
+    display: flex;
+    opacity: .7;
+    display:none;
+}
+.d h4{
+    margin-left: 30%;
+}
+.d a{
+    margin: auto;
+    margin-left: -30%;
+}
+.s{
+    height: 57vh;
+}
+
+.sacn img{
+    width: 100%;
+    height: 57vh;
+    padding-top: 10px;
+    border-radius: 50px;
+}
+.sacn img:hover +.d{
+   display: block;
+}
+
+ .side ul a{
+    text-decoration: none;
+    font-size: large;
+    color:white;
+}
+.side ul{ 
+    list-style: none;
+}
+.side h4{
+    color: white;
+    margin-left: 20px;
+}
+
+#person li img{
+    margin: 10px;
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+}
+.lists{
+    margin-top: 40px;
+}
+.lists a{
+    text-decoration: none;
+    color: rgb(46, 46, 136);
+    padding: 10px;
+    font-size: large;
+    font-family: cursive;
+  }
+  .lists ul{
+    font-family: cursive;
+    list-style: none;
+    margin-top: 10%;
+  }
+    
+.footer{
+    color: white;
+    padding: 20px;
+    background-color: darkcyan;
+  }
+  .footer p{
+    display: inline;
+  }
+  .footer i{
+    font-size: 24px;
+    float: right;
+    padding: 0px;
+  
+  }
+  .drop{
+    position: absolute;
+    background-color: beige;
+    z-index: 3;
+    margin-left:-1%;
+    padding: 20px;
+    display: none;
+  }
+  .ce{
+      margin-left: -35%;
+  }
+  .le{
+      margin-left: -80%;
+  }
+  .drop img{
+    height: 50vh;
+    opacity: .3;
+
+  }
+  .drop img:hover{
+      box-shadow: 4px 4px 4px 4px rgb(167, 158, 158);
+      opacity: 1;
+  }
+  .dropdwon:hover .drop{
+      display: block;
+  }
+  
