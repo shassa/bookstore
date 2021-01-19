@@ -1,3 +1,51 @@
+<?php     
+session_start();
+include 'db.php';
+?>
+<?php
+        if(!empty($_POST)){
+          $firstname=trim($_POST['firstname']);
+          $secandname=trim($_POST['secandname']);
+          $username=trim($_POST['username']);
+          $phone=trim($_POST['phone']);
+          $email=trim($_POST['email']);
+          $pass=trim($_POST['pass']);
+          // $uploads_dir = '/uploads';
+          // foreach ($_FILES["pictures"]["error"] as $key => $error) {
+          //     if ($error == UPLOAD_ERR_OK) {
+          //         $tmp_name = $_FILES["pictures"]["tmp_name"][$key];
+          //         // basename() may prevent filesystem traversal attacks;
+          //         // further validation/sanitation of the filename may be appropriate
+          //         $name = basename($_FILES["pictures"]["name"][$key]);
+          //         move_uploaded_file($tmp_name, "$uploads_dir/$name");
+          //     }
+          // }
+         
+          $msg = ""; 
+          
+          // If upload button is clicked ... 
+          if (isset($_POST['upload'])) { 
+          
+            $filename = $_FILES["uploadfile"]["name"]; 
+            $tempname = $_FILES["uploadfile"]["tmp_name"];	 
+              $folder = "image/".$filename; 
+             $insert="INSERT INTO `users`(`userId`,`firstname`,`secand`,`userName`,`phone`,`email`,`password`,`image`)VALUES(NULL,' $firstname ',' $secandname ',' $username ',' $phone ',' $email ',' $pass ','$filename ')";
+         
+          // Now let's move the uploaded image into the folder: image 
+          if (move_uploaded_file($tempname, $folder)) { 
+            $msg = "Image uploaded successfully"; 
+          }else{ 
+            $msg = "Failed to upload image"; 
+            } 
+      } 
+    
+             $run = mysqli_query($connection,$insert);
+          if($run){
+            echo'<div class=" alert alert-success text"> YOUR REGIST COMPLETED</div>';
+             header('Refresh:2 login.php');
+          }     
+        }
+    ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,80 +57,48 @@
     <link rel="stylesheet" href="login.css">
     <link rel="stylesheet" href="fontawesome-free-5.15.1-web/fontawesome-free-5.15.1-web/css/all.css">
     <link rel="stylesheet" href="news.css">
-
+   
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container-fluid">
-          <a class="navbar-brand" href="#">BOOK STORE</a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-              <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="news.html">Home</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="about.html">About</a>
-              </li>
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  State
-                </a>
-                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                  <li><a class="dropdown-item" href="login.html">LOG IN</a></li>
-                  <li><a class="dropdown-item" href="regist.html">REGISTE</a></li>
-                  <li><hr class="dropdown-divider"></li>
-                  <li><a class="dropdown-item" href="#">Google Log in </a></li>
-                </ul>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link " href="bloge.html" tabindex="-1" aria-disabled="true">BLOGE</a>
-              </li>
-            </ul>
-            <form class="d-flex">
-              <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-              <button class="btn btn-outline-success" type="submit">Search</button>
-            </form>
-          </div>
-        </div>
-      </nav>
       <div class="login container-fluid">
-        <form>
-            <div class="mb-3">
+        <form method="post" enctype="multipart/form-data">
+            <div>
               <label for="exampleInputEmail1" class="form-label">First Name</label>
-              <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+              <input type="text" name="firstname" class="form-control" >
               <div id="emailHelp" class="form-text">We'll never share your Name with anyone else.</div>
             </div>
             <div class="mb-3">
                 <label for="exampleInputEmail1" class="form-label">Secand Name</label>
-                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                <input type="text" name="secandname" class="form-control">
               </div>
               <div class="mb-3">
                 <label for="exampleInputEmail1" class="form-label">User Name</label>
-                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                <input type="text" class="form-control" name="username">
                 <div id="emailHelp" class="form-text">This Name will apper in your profile</div>
               </div>
               <div class="mb-3">
                 <label for="exampleInputEmail1" class="form-label">Email address</label>
-                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                <input type="email" class="form-control" name="email" id="exampleInputEmail1" aria-describedby="emailHelp">
                 <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
               </div>
               <div class="mb-3">
                 <label for="exampleInputEmail1" class="form-label">Your phone Numper</label>
-                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                <input type="phone" name="phone"class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
                 <div id="emailHelp" class="form-text">We'll never share your phone with anyone else.</div>
               </div>
             <div class="mb-3">
               <label for="exampleInputPassword1" class="form-label">Password</label>
-              <input type="password" class="form-control" id="exampleInputPassword1">
+              <input type="password" name="pass" class="form-control" id="exampleInputPassword1">
             </div>
+            <div class="mb-3">
+              <label for="exampleInputPassword1" class="form-label">Your Image</label>
+              <input type="file" name="uploadfile" value="" /> 
+              </div>
             <div class="mb-3 form-check">
               <input type="checkbox" class="form-check-input" id="exampleCheck1">
               <label class="form-check-label" for="exampleCheck1">Agree in the web police</label>
             </div>
-            <button type="submit" class="btn btn-primary">Regist</button>
+            <button type="submit" name="upload" class="btn btn-primary">Regist</button>
           </form>
       </div>
       <div class="lists container">
@@ -110,7 +126,7 @@
        <p> cope right made by Nashwa Hassan</p>
        <i class="fas fa-bahai"></i>
    </div>
-    
+   
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
 </body>

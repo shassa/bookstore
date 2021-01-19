@@ -1,4 +1,26 @@
-<!DOCTYPE html>
+<?php 
+  session_start();
+   include 'db.php';  
+  if($_POST){
+    $email=$_POST['email'];
+    $pass=trim($_POST['pass']);
+      $select="select userId from users where email=' ".$email." ' and password= ".$pass."";  
+      $run=mysqli_query($connection,$select);
+      if($run){
+          $row = mysqli_fetch_assoc($run);
+
+          $_SESSION['userId']=$row['userId'];
+          if($row>0){
+            header('location: news.php');}
+      }else{
+        echo " you dont have permition";
+      }
+    }
+
+   ?>
+  
+  
+  <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -9,64 +31,35 @@
     <link rel="stylesheet" href="login.css">
     <link rel="stylesheet" href="fontawesome-free-5.15.1-web/fontawesome-free-5.15.1-web/css/all.css">
     <link rel="stylesheet" href="news.css">
+    <!-- google login -->
+    <meta name="google-signin-scope" content="profile email">
+    <meta name="google-signin-client_id" content="331395799611-b8mqsoq58mcrp651f1juk9egt5372bq4.apps.googleusercontent.com">
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
 
 </head>
 <body>
-  <embed name="GoodEnough" src="song.mp3" loop="false" hidden="true" autostart="true">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container-fluid">
-          <a class="navbar-brand" href="#">BOOK STORE</a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-              <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="news.html">Home</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="about.html">About</a>
-              </li>
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  State
-                </a>
-                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                  <li><a class="dropdown-item" href="login.html">LOG IN</a></li>
-                  <li><a class="dropdown-item" href="regist.html">REGISTE</a></li>
-                  <li><hr class="dropdown-divider"></li>
-                  <li><a class="dropdown-item" href="#">Google Log in </a></li>
-                </ul>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link " href="bloge.html">BLOGE</a>
-              </li>
-            </ul>
-            <form class="d-flex">
-              <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-              <button class="btn btn-outline-success" type="submit">Search</button>
-            </form>
-          </div>
-        </div>
-      </nav>
+ 
       <div class="login container-fluid">
-        <form>
+        <form action="" method="post">
             <div class="mb-3">
               <label for="exampleInputEmail1" class="form-label">Email address</label>
-              <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+              <input type="email" name="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
               <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
             </div>
             <div class="mb-3">
               <label for="exampleInputPassword1" class="form-label">Password</label>
-              <input type="password" class="form-control" id="exampleInputPassword1">
+              <input type="password" name="pass" class="form-control" id="exampleInputPassword1">
             </div>
             <div class="mb-3 form-check">
               <input type="checkbox" class="form-check-input" id="exampleCheck1">
               <label class="form-check-label" for="exampleCheck1">Forget Your Password</label>
             </div>
             <button type="submit" class="btn btn-primary">Log In</button>
+            <a  class="m-1 btn btn-success" href="regist.php">Regist Now</a>
+            <button class="btn btn-primary g-signin2" data-onsuccess="onSignIn" data-theme="dark"></button>
           </form>
       </div>
+   
       <div class="lists container">
         <div class="row">
             <div class="col-6">
@@ -93,7 +86,24 @@
        <i class="fas fa-bahai"></i>
    </div>
 
-  
+   <script>
+      function onSignIn(googleUser) {
+        // Useful data for your client-side scripts:
+        var profile = googleUser.getBasicProfile();
+        console.log("ID: " + profile.getId()); // Don't send this directly to your server!
+        console.log('Full Name: ' + profile.getName());
+        console.log('Given Name: ' + profile.getGivenName());
+        console.log('Family Name: ' + profile.getFamilyName());
+        console.log("Image URL: " + profile.getImageUrl());
+        console.log("Email: " + profile.getEmail());
+
+        // The ID token you need to pass to your backend:
+        var id_token = googleUser.getAuthResponse().id_token;
+        console.log("ID Token: " + id_token);
+      }
+    </script>
+
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
 </body>

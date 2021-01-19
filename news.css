@@ -10,12 +10,13 @@
 h1{
   font-family: cursive;
   font-weight: bolder;
-  font-size: 70px;
+  font-size: 3rem;
   color: gold;
   top:40%;
   left: 25%;
   position: absolute;
 }
+
 @keyframes bg{
   0%,2%{
     background-image: url("image/77.jpg");

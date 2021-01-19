@@ -1,3 +1,24 @@
+
+<?php  
+    session_start();
+    include 'db.php';
+?>
+ <?php   
+            if(!empty($_POST)){
+            $comment=$_POST['comment'];
+            $animeid=$_GET['id'];
+            $userid=$_SESSION['userId'];
+            $insert= "INSERT INTO `comment` (`commintId`,`usersId`,`animesId`,`comment`)VALUE(null,'$userid','$animeid','$comment')";
+            $run = mysqli_query($connection,$insert);
+               if($run){
+                 echo'<br><br><br><div class="alert alert-success">YOUR COMMENT IS ADDESD</div>';
+                 header('refresh:2 story.php?id='.$_GET['id'].'');
+               }
+            }
+            $qary='SELECT * FROM users WHERE userId='.$_SESSION['userId'].'';
+            $run=mysqli_query($connection,$qary);
+            $row=mysqli_fetch_assoc($run);
+       ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -18,43 +39,38 @@
               <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
               </button>
-              <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <div class="float-right" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                   <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="news.html">Home</a>
+                    <a class="nav-link active" aria-current="page" href="news.php">Home</a>
                   </li>
                   <li class="nav-item">
                     <a class="nav-link" href="about.html">About</a>
                   </li>
-                  <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                      State
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                      <li><a class="dropdown-item" href="login.html">LOG IN</a></li>
-                      <li><a class="dropdown-item" href="regist.html">REGISTE</a></li>
-                      <li><hr class="dropdown-divider"></li>
-                      <li><a class="dropdown-item" href="#">Google Log in </a></li>
-                    </ul>
-                  </li>
                   <li class="nav-item">
                     <a class="nav-link" href="bloge.html" tabindex="-1" aria-disabled="true">BLOGE</a>
                   </li>
+                  <li class="nav-item">
+                    <button class="nav-link btn btn-primary text-light"  tabindex="-1" aria-disabled="true">
+                    <img src="<?php echo"image/".$row['image'];?>" height="20px">
+                    <?php echo $row['userName']?></button>
+                  </li>
+                 
                 </ul>
-                <form class="d-flex">
-                  <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                  <button class="btn btn-outline-success" type="submit">Search</button>
-                </form>
               </div>
             </div>
           </nav>
           <div class="row container">
-                <div class="col-3 main">
-                    <img src="image/5.jpg" >
+         <?php 
+         $select='SELECT * FROM animes where animeId="'.$_GET['id'].'"';
+             $run=mysqli_query($connection,$select);
+            while($row = mysqli_fetch_assoc($run)){
+                echo'<div class="col-3 main">
+                    <img src="'.$row['image'].'" >
                 </div>
                 <div class="col-9 overflow-auto st">
-                        <h2>Story Title</h2>
-                        <p>Some text to enable scrolling.. Lorem ipsum dolor sit amet, illum definitiones no quo, maluisset concludaturque et eum, altera fabulas ut quo. Atqui causae gloriatur ius te, id agam omnis evertitur eum. Affert laboramus repudiandae nec et. Inciderint efficiantur his ad. Eum no molestiae voluptatibus.</p>
+                        <h2>'.$row['title'].'</h2>
+                        '.$row['story'].'
                         <p>Some text to enable scrolling.. Lorem ipsum dolor sit amet, illum definitiones no quo, maluisset concludaturque et eum, altera fabulas ut quo. Atqui causae gloriatur ius te, id agam omnis evertitur eum. Affert laboramus repudiandae nec et. Inciderint efficiantur his ad. Eum no molestiae voluptatibus.</p>
                         <p>Some text to enable scrolling.. Lorem ipsum dolor sit amet, illum definitiones no quo, maluisset concludaturque et eum, altera fabulas ut quo. Atqui causae gloriatur ius te, id agam omnis evertitur eum. Affert laboramus repudiandae nec et. Inciderint efficiantur his ad. Eum no molestiae voluptatibus.</p>
                         <p>Some text to enable scrolling.. Lorem ipsum dolor sit amet, illum definitiones no quo, maluisset concludaturque et eum, altera fabulas ut quo. Atqui causae gloriatur ius te, id agam omnis evertitur eum. Affert laboramus repudiandae nec et. Inciderint efficiantur his ad. Eum no molestiae voluptatibus.</p>
@@ -69,59 +85,40 @@
                         <p>Some text to enable scrolling.. Lorem ipsum dolor sit amet, illum definitiones no quo, maluisset concludaturque et eum, altera fabulas ut quo. Atqui causae gloriatur ius te, id agam omnis evertitur eum. Affert laboramus repudiandae nec et. Inciderint efficiantur his ad. Eum no molestiae voluptatibus.</p>
                         <p>Some text to enable scrolling.. Lorem ipsum dolor sit amet, illum definitiones no quo, maluisset concludaturque et eum, altera fabulas ut quo. Atqui causae gloriatur ius te, id agam omnis evertitur eum. Affert laboramus repudiandae nec et. Inciderint efficiantur his ad. Eum no molestiae voluptatibus.</p>
                 </div>
+                ';}?>
         </div>
        <div class="container">
            <h2>Comments</h2>
-           <div class="row comments">
+           <?php 
+           $select='SELECT users.userName,users.image,comment.comment FROM users, comment where users.userId=comment.usersId and comment.animesId="'.$_GET['id'].'"';
+           $run= mysqli_query($connection,$select);
+           while($row=mysqli_fetch_assoc($run)){
+             $image="image/".$row['image'];
+            echo'<div class="row comments">
                <div class="col-2">
-                   <img src="image/p1.jpg">
+                   <img src="'.$image.'">
                </div>
                <div class="col-10 text">
-                   <h3>User Name</h3>
-                   <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quam, doloremque harum! Est officiis, impedit voluptas, nemo e</p>
+                   <h3>'.$row['userName'].'</h3>
+                   <p>'.$row['comment'].'</p>
                </div>
 
-           </div>
-           <div class="row comments">
-            <div class="col-2">
-                <img src="image/p3.jpg">
-            </div>
-            <div class="col-10 text">
-                <h3>User Name</h3>
-                <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quam, doloremque harum! Est officiis, impedit voluptas, nemo e</p>
-            </div>
+           </div>';
+           }?>
 
-        </div>
-        <div class="row comments">
-            <div class="col-2">
-                <img src="image/p2.jpg">
-            </div>
-            <div class="col-10 text">
-                <h3>User Name</h3>
-                <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quam, doloremque harum! Est officiis, impedit voluptas, nemo e</p>
-            </div>
-
-        </div>
-        <div class="row comments">
-            <div class="col-2">
-                <img src="image/p4.jpg">
-            </div>
-            <div class="col-10 text">
-                <h3>User Name</h3>
-                <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quam, doloremque harum! Est officiis, impedit voluptas, nemo e</p>
-            </div>
-
-        </div>
+     <form method="post">
         <h5>Your Comment</h5>
         <div class="area">
-            <textarea class="form-control" aria-label="With textarea" placeholder=" Your Comment"></textarea>
-            <button class="btn btn-primary">Send</button>
+            <textarea class="form-control" aria-label="With textarea" name="comment" placeholder=" Your Comment"></textarea>
+            <button class="btn btn-primary " type="submit">Send</button>
        </div>
+       </form>
     </div>
        <div class="footer">
            <p> cope right made by Nashwa Hassan</p>
            <i class="fas fa-bahai"></i>
        </div>
+      
        <!-- jQary CDN -->
        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <!-- JavaScript Bundle with Popper -->
